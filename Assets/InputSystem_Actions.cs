@@ -127,6 +127,42 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EmbeddedProjectile"",
+                    ""type"": ""Button"",
+                    ""id"": ""fca0c256-ff5a-45a4-acb2-5ac08f4e9ab1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SplitProjectile"",
+                    ""type"": ""Button"",
+                    ""id"": ""6323d664-bade-4db2-aec1-ae936e53ba8b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AreaProjectile"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ea99985-1da2-4f82-95c3-7d6386922587"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CancelSpecial"",
+                    ""type"": ""Button"",
+                    ""id"": ""8cb1364e-fd46-43aa-8167-a4b831c94d0f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -215,6 +251,50 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8de58ac5-4d14-4813-bf05-c711ec362613"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EmbeddedProjectile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6e58367-5944-4916-a516-91062077796a"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SplitProjectile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12b50534-8995-40e3-8390-17bbd450a604"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AreaProjectile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6172ba60-3e63-47df-b602-24c89f05ad4a"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelSpecial"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -806,6 +886,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Strength = m_Player.FindAction("Strength", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Special = m_Player.FindAction("Special", throwIfNotFound: true);
+        m_Player_EmbeddedProjectile = m_Player.FindAction("EmbeddedProjectile", throwIfNotFound: true);
+        m_Player_SplitProjectile = m_Player.FindAction("SplitProjectile", throwIfNotFound: true);
+        m_Player_AreaProjectile = m_Player.FindAction("AreaProjectile", throwIfNotFound: true);
+        m_Player_CancelSpecial = m_Player.FindAction("CancelSpecial", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -903,6 +987,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Strength;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Special;
+    private readonly InputAction m_Player_EmbeddedProjectile;
+    private readonly InputAction m_Player_SplitProjectile;
+    private readonly InputAction m_Player_AreaProjectile;
+    private readonly InputAction m_Player_CancelSpecial;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -930,6 +1018,22 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Special".
         /// </summary>
         public InputAction @Special => m_Wrapper.m_Player_Special;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/EmbeddedProjectile".
+        /// </summary>
+        public InputAction @EmbeddedProjectile => m_Wrapper.m_Player_EmbeddedProjectile;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SplitProjectile".
+        /// </summary>
+        public InputAction @SplitProjectile => m_Wrapper.m_Player_SplitProjectile;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/AreaProjectile".
+        /// </summary>
+        public InputAction @AreaProjectile => m_Wrapper.m_Player_AreaProjectile;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/CancelSpecial".
+        /// </summary>
+        public InputAction @CancelSpecial => m_Wrapper.m_Player_CancelSpecial;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -968,6 +1072,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Special.started += instance.OnSpecial;
             @Special.performed += instance.OnSpecial;
             @Special.canceled += instance.OnSpecial;
+            @EmbeddedProjectile.started += instance.OnEmbeddedProjectile;
+            @EmbeddedProjectile.performed += instance.OnEmbeddedProjectile;
+            @EmbeddedProjectile.canceled += instance.OnEmbeddedProjectile;
+            @SplitProjectile.started += instance.OnSplitProjectile;
+            @SplitProjectile.performed += instance.OnSplitProjectile;
+            @SplitProjectile.canceled += instance.OnSplitProjectile;
+            @AreaProjectile.started += instance.OnAreaProjectile;
+            @AreaProjectile.performed += instance.OnAreaProjectile;
+            @AreaProjectile.canceled += instance.OnAreaProjectile;
+            @CancelSpecial.started += instance.OnCancelSpecial;
+            @CancelSpecial.performed += instance.OnCancelSpecial;
+            @CancelSpecial.canceled += instance.OnCancelSpecial;
         }
 
         /// <summary>
@@ -991,6 +1107,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Special.started -= instance.OnSpecial;
             @Special.performed -= instance.OnSpecial;
             @Special.canceled -= instance.OnSpecial;
+            @EmbeddedProjectile.started -= instance.OnEmbeddedProjectile;
+            @EmbeddedProjectile.performed -= instance.OnEmbeddedProjectile;
+            @EmbeddedProjectile.canceled -= instance.OnEmbeddedProjectile;
+            @SplitProjectile.started -= instance.OnSplitProjectile;
+            @SplitProjectile.performed -= instance.OnSplitProjectile;
+            @SplitProjectile.canceled -= instance.OnSplitProjectile;
+            @AreaProjectile.started -= instance.OnAreaProjectile;
+            @AreaProjectile.performed -= instance.OnAreaProjectile;
+            @AreaProjectile.canceled -= instance.OnAreaProjectile;
+            @CancelSpecial.started -= instance.OnCancelSpecial;
+            @CancelSpecial.performed -= instance.OnCancelSpecial;
+            @CancelSpecial.canceled -= instance.OnCancelSpecial;
         }
 
         /// <summary>
@@ -1319,6 +1447,34 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSpecial(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "EmbeddedProjectile" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEmbeddedProjectile(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SplitProjectile" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSplitProjectile(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "AreaProjectile" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAreaProjectile(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CancelSpecial" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCancelSpecial(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

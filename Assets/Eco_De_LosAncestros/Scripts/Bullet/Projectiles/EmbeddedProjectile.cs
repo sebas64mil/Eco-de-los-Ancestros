@@ -45,6 +45,8 @@ public class EmbeddedProjectile : MonoBehaviour, IPoolable, IProjectile
 
     public float FireCooldown => projectileData != null ? projectileData.FireCooldown : 0.5f;
 
+    public bool IsSpecial => true;
+
     private void ActivateBoost()
     {
         if (hasUsedSpecial) return;

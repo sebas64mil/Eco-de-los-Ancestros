@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class ProjectileShooter : MonoBehaviour
 {
@@ -6,25 +7,36 @@ public class ProjectileShooter : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private DataPlayer dataPlayer;
 
-    [Header("Pool")]
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private int poolSize = 10;
-    [SerializeField] private Transform poolContainer;
+    public static event Action OnSpecialFired;
 
     private float lastShootTime;
     private ObjectPool pool;
+    private GameObject currentPrefab;
+    private bool allowImmediateShot;
 
-    private void Awake()
+    public void Initialize(GameObject prefab, ObjectPool newPool)
     {
-        pool = new ObjectPool(projectilePrefab, poolSize, poolContainer);
+        currentPrefab = prefab;
+        pool = newPool;
+
+        allowImmediateShot = true;
     }
 
     public void Shoot()
     {
-        float prefabCooldown = GetProjectilePrefabCooldown();
+        if (pool == null || currentPrefab == null) return;
 
-        if (Time.time < lastShootTime + prefabCooldown)
-            return;
+        float cooldown = GetCooldown();
+
+        if (!allowImmediateShot)
+        {
+            if (Time.time < lastShootTime + cooldown)
+                return;
+        }
+        else
+        {
+            allowImmediateShot = false;
+        }
 
         lastShootTime = Time.time;
 
@@ -32,40 +44,26 @@ public class ProjectileShooter : MonoBehaviour
 
         if (obj.TryGetComponent<IProjectile>(out var projectile))
         {
-            Vector2 direction = firePoint.up;
-            float force = dataPlayer.currentStrength;
-
-            bool allowBounce = GetProjectileBounce();
-
             projectile.Launch(
                 firePoint.position,
-                direction,
-                force,
-                allowBounce
+                firePoint.up,
+                dataPlayer.currentStrength,
+                projectile.AllowBounce
             );
+
+            if (projectile.IsSpecial)
+            {
+                OnSpecialFired?.Invoke();
+            }
         }
     }
 
-    private float GetProjectilePrefabCooldown()
+
+    private float GetCooldown()
     {
-        if (projectilePrefab == null) return 0.5f;
-
-        if (projectilePrefab.TryGetComponent<BasicProjectile>(out var basic))
-            return basic.FireCooldown;
-
-        if (projectilePrefab.TryGetComponent<EmbeddedProjectile>(out var embedded))
-            return embedded.FireCooldown;
+        if (currentPrefab.TryGetComponent<IProjectile>(out var proj))
+            return proj.FireCooldown;
 
         return 0.5f;
-    }
-
-    private bool GetProjectileBounce()
-    {
-        if (projectilePrefab.TryGetComponent<IProjectile>(out var projectile))
-        {
-            return projectile.AllowBounce;
-        }
-
-        return false;
     }
 }
