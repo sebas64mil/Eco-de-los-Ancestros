@@ -8,7 +8,7 @@ PhysicsMaterial2D:
   m_PrefabAsset: {fileID: 0}
   m_Name: RocaFisica
   serializedVersion: 2
-  friction: 37
+  friction: 20
   bounciness: 0.2
   m_FrictionCombine: 4
   m_BounceCombine: 4

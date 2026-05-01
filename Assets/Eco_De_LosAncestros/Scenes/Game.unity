@@ -430,6 +430,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 586742342}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnSpecialInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b280b11c-c47a-4884-aa8c-0e36060f2e54
+    m_ActionName: 'Player/Special[/Keyboard/q]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -601,7 +617,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 1949713316129832329, guid: 1d6d6392c59eb1a45be6a81284f5ef4b, type: 3}
   poolSize: 10
   poolContainer: {fileID: 283975022}
-  fireCooldown: 0.5
 --- !u!114 &610511601
 MonoBehaviour:
   m_ObjectHideFlags: 0

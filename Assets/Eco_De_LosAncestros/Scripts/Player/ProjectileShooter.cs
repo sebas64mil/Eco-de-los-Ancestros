@@ -11,9 +11,6 @@ public class ProjectileShooter : MonoBehaviour
     [SerializeField] private int poolSize = 10;
     [SerializeField] private Transform poolContainer;
 
-    [Header("Disparo")]
-    [SerializeField] private float fireCooldown = 0.5f;
-
     private float lastShootTime;
     private ObjectPool pool;
 
@@ -24,7 +21,9 @@ public class ProjectileShooter : MonoBehaviour
 
     public void Shoot()
     {
-        if (Time.time < lastShootTime + fireCooldown)
+        float prefabCooldown = GetProjectilePrefabCooldown();
+
+        if (Time.time < lastShootTime + prefabCooldown)
             return;
 
         lastShootTime = Time.time;
@@ -47,9 +46,22 @@ public class ProjectileShooter : MonoBehaviour
         }
     }
 
+    private float GetProjectilePrefabCooldown()
+    {
+        if (projectilePrefab == null) return 0.5f;
+
+        if (projectilePrefab.TryGetComponent<BasicProjectile>(out var basic))
+            return basic.FireCooldown;
+
+        if (projectilePrefab.TryGetComponent<EmbeddedProjectile>(out var embedded))
+            return embedded.FireCooldown;
+
+        return 0.5f;
+    }
+
     private bool GetProjectileBounce()
     {
-        if (projectilePrefab.TryGetComponent<BasicProjectile>(out var projectile))
+        if (projectilePrefab.TryGetComponent<IProjectile>(out var projectile))
         {
             return projectile.AllowBounce;
         }

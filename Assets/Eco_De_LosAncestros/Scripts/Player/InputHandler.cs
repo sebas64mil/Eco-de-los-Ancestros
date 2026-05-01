@@ -7,7 +7,7 @@ public class InputHandler : MonoBehaviour
     public event Action<float> OnRotate;
     public event Action<float> OnStrength;
     public event Action OnFire;
-
+    public static event Action OnSpecial;
     public void OnRotateInput(InputAction.CallbackContext context)
     {
         float value = context.ReadValue<float>();
@@ -27,4 +27,14 @@ public class InputHandler : MonoBehaviour
             OnFire?.Invoke();
         }
     }
+
+    public void OnSpecialInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnSpecial?.Invoke();
+        }
+    }
+
+
 }

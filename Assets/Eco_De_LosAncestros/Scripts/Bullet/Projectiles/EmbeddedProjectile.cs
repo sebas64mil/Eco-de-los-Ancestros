@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class BasicProjectile : MonoBehaviour, IPoolable, IProjectile
+public class EmbeddedProjectile : MonoBehaviour, IPoolable, IProjectile
 {
     private Rigidbody2D rb;
     private ObjectPool pool;
@@ -9,17 +9,19 @@ public class BasicProjectile : MonoBehaviour, IPoolable, IProjectile
     [Header("Configuración")]
     [SerializeField] private ProjectileDataSO projectileData;
 
-    [Header("Comportamiento")]
-    [SerializeField] private bool allowBounce = true;
+    [Header("Boost")]
+    [SerializeField] private float boostForce = 10f;
 
-    public bool AllowBounce => allowBounce;
 
     private float timer;
+    private bool hasUsedSpecial;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
+
+    public bool AllowBounce => false;
 
     public void SetPool(ObjectPool pool)
     {
@@ -28,8 +30,6 @@ public class BasicProjectile : MonoBehaviour, IPoolable, IProjectile
 
     public void Launch(Vector2 position, Vector2 direction, float force, bool allowBounce)
     {
-        this.allowBounce = allowBounce;
-
         transform.position = position;
 
         rb.linearVelocity = Vector2.zero;
@@ -38,9 +38,29 @@ public class BasicProjectile : MonoBehaviour, IPoolable, IProjectile
         rb.AddForce(direction * force, ForceMode2D.Impulse);
 
         timer = projectileData != null ? projectileData.LifeTime : 3f;
+        hasUsedSpecial = false;
+
+        InputHandler.OnSpecial += ActivateBoost;
     }
 
     public float FireCooldown => projectileData != null ? projectileData.FireCooldown : 0.5f;
+
+    private void ActivateBoost()
+    {
+        if (hasUsedSpecial) return;
+
+        hasUsedSpecial = true;
+
+        float directionX = Mathf.Sign(rb.linearVelocity.x);
+
+        if (Mathf.Abs(directionX) < 0.01f)
+            directionX = 1f;
+
+        Vector2 direction = new Vector2(directionX, 0f);
+
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(direction * boostForce, ForceMode2D.Impulse);
+    }
 
     private void Update()
     {
@@ -51,6 +71,12 @@ public class BasicProjectile : MonoBehaviour, IPoolable, IProjectile
             ReturnToPool();
         }
     }
+
+    private void OnDisable()
+    {
+        InputHandler.OnSpecial -= ActivateBoost;
+    }
+
     private void ReturnToPool()
     {
         if (pool != null)
